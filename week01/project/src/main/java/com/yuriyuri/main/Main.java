@@ -336,8 +336,12 @@ public class Main {
             return;
         }
 
-        repairFormService.createForm(loginId, type, problem);
-        System.out.println("创建完毕");
+        if(repairFormService.createForm(loginId, type, problem)){
+            System.out.println("创建完毕");
+        }
+        else {
+            System.out.println("未知错误，创建失败");
+        }
     }
 
     /**
@@ -472,8 +476,11 @@ public class Main {
         }
 
         //坚持到最后就是胜利
-        userService.updatePassword(newPassword, loginId);
-        System.out.println("修改成功");
+        if(userService.updatePassword(newPassword, loginId)){
+            System.out.println("修改成功");
+        }else {
+            System.out.println("修改失败，未知错误");
+        }
     }
 
     /**
