@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/repair_db?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+aliyun:
+    oss:
+      access-key-id: ${ALI_ACCESS_KEY_ID}
+      access-key-secret: ${ALI_ACCESS_KEY_SECRET}
+      endpoint: oss-cn-beijing.aliyuncs.com
+      bucket: repair-system-demo

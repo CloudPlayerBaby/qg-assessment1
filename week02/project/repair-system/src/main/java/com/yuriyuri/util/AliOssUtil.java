@@ -21,14 +21,13 @@ public class AliOssUtil {
     // 从环境变量中获取访问凭证。运行本代码示例之前，请确保已设置环境变量OSS_ACCESS_KEY_ID和OSS_ACCESS_KEY_SECRET。
     //EnvironmentVariableCredentialsProvider credentialsProvider = CredentialsProviderFactory.newEnvironmentVariableCredentialsProvider();
     @Value("${aliyun.oss.access-key-id}")
-    private static final String ACCESS_KEY_ID = "LTAI5t7VS63eiWaDgg2zpR5B";
+    private String ACCESS_KEY_ID;
     @Value("${aliyun.oss.access-key-secret}")
-    private static final String ACCESS_KEY_SECRET = "QXdCo12wlG6basaZn08MotDHKqPBOs";
+    private String ACCESS_KEY_SECRET;
     // 填写Bucket名称，例如examplebucket。
     private static final String BUCKET_NAME = "repair-system-demo";
 
-    public static String uploadFile(String objectName, InputStream in) throws Exception {
-
+    public String uploadFile(String objectName, InputStream in) throws Exception {
 
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
