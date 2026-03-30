@@ -6,24 +6,29 @@ import com.yuriyuri.entity.User;
 import com.yuriyuri.service.UserService;
 import com.yuriyuri.util.JwtUtil;
 import com.yuriyuri.util.ThreadLocalUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Tag(name = "用户管理", description = "用户相关接口")
 @RestController
 @RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
 
+    @Operation(summary = "用户注册",description = "输入学号和密码注册")
     @PostMapping("/register")
     public Result<Boolean> register(@RequestBody RegisterDTO dto) {
         boolean success = userService.add(dto.getSid(), dto.getPassword(), dto.getIdentity());
         return Result.success(success);
     }
 
+    @Operation(summary = "用户登录", description = "使用学号和密码登录，返回 JWT token")
     @PostMapping("/login")
     public Result<String> login(@RequestBody LoginDTO dto) {
         User user = userService.select(dto.getSid(), dto.getPassword());
@@ -41,6 +46,7 @@ public class UserController {
         return Result.success(token);
     }
 
+    @Operation(summary = "通过学号查找用户")
     @GetMapping("/sid")
     public Result<User> selectBySid() {
         //从 token获取用户sid
@@ -50,6 +56,7 @@ public class UserController {
         return Result.success(user);
     }
 
+    @Operation(summary = "通过id查找用户")
     @GetMapping("/id")
     public Result<User> selectById() {
         //从 token获取用户id
@@ -59,6 +66,7 @@ public class UserController {
         return Result.success(user);
     }
 
+    @Operation(summary = "学生绑定宿舍",description = "首次绑定")
     @PostMapping("/dormitory")
     public Result<Void> bindDormitory(@RequestBody DormitoryDTO dto) {
         //从 token获取用户id
@@ -68,6 +76,7 @@ public class UserController {
         return Result.success();
     }
 
+    @Operation(summary = "学生更新宿舍")
     @PatchMapping("/dormitory")
     public Result<Void> updateDormitory(@RequestBody DormitoryDTO dto) {
         //从 token获取用户id
@@ -77,6 +86,7 @@ public class UserController {
         return Result.success();
     }
 
+    @Operation(summary = "更新密码",description = "几次密码比对要通过才可以更新")
     @PatchMapping("/password")
     public Result<String> updatePassword(@RequestBody PasswordDTO dto) {
         String oldPassword = dto.getOldPassword();

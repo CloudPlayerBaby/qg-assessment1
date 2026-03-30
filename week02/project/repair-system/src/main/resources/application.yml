@@ -1,9 +1,8 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/repair_db?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-    username: root
-    password: 1234
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
 mybatis:
   configuration:
@@ -15,3 +14,7 @@ aliyun:
       access-key-secret: ${ALI_ACCESS_KEY_SECRET}
       endpoint: oss-cn-beijing.aliyuncs.com
       bucket: repair-system-demo
+
+logging:
+  file:
+    name: ./week02/project/repair-system/logs/app.log

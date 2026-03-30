@@ -1,6 +1,7 @@
 package com.yuriyuri.dto;
 
 import com.yuriyuri.entity.Identity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data

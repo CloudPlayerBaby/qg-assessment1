@@ -6,6 +6,8 @@ import com.yuriyuri.entity.Identity;
 import com.yuriyuri.entity.RepairForm;
 import com.yuriyuri.service.RepairFormService;
 import com.yuriyuri.util.ThreadLocalUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +17,14 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Map;
 
+@Tag(name = "报单管理", description = "报单相关接口")
 @RestController
 @RequestMapping("/repairForms")
 public class RepairFormController {
     @Autowired
     private RepairFormService repairFormService;
 
+    @Operation(summary = "创建报单",description = "需要类型、问题和图片地址")
     @PostMapping("/create")
     public Result<Void> createForm(@RequestParam String type,
                                    @RequestParam String problem,
@@ -33,6 +37,7 @@ public class RepairFormController {
         return Result.success();
     }
 
+    @Operation(summary = "通过学号查询报修单",description = "从token获取自己的学号，只能查自己的")
     @GetMapping("/mine")
     public Result<List<RepairForm>> selectFormsByUid() {
         //从 token获取用户id
@@ -42,6 +47,7 @@ public class RepairFormController {
         return Result.success(repairForms);
     }
 
+    @Operation(summary = "更新报单状态",description = "管理员可随意更新，学生只可以取消")
     @PatchMapping("/{id}/status")
     public Result<Boolean> updateStatus(@PathVariable int id, @RequestBody FormDTO dto){
         //更新表单状态，如果是学生只能把0改1，如果是管理员可以进行其他操作
@@ -68,28 +74,28 @@ public class RepairFormController {
 
     }
 
+    @Operation(summary = "通过id查询报单")
     @GetMapping("/{id}")
     public Result<RepairForm> selectFormsById(@PathVariable int id){
         RepairForm repairForm = repairFormService.selectFormsById(id);
         return Result.success(repairForm);
     }
 
+    @Operation(summary = "查询所有报单")
     @GetMapping("/all")
     public Result<List<RepairForm>> selectAllForms(){
         List<RepairForm> repairForms = repairFormService.selectAllForms();
         return Result.success(repairForms);
     }
 
+    @Operation(summary = "根据状态查询报单",description = "目前只有0和1")
     @GetMapping("/status")
     public Result<List<RepairForm>> selectFormsByStatus(@RequestParam int status){
         List<RepairForm> repairForms = repairFormService.selectFormsByStatus(status);
         return Result.success(repairForms);
     }
 
-    /**
-     * 通过报单号id删除报单
-     * @return
-     */
+    @Operation(summary = "根据id删除报单",description = "只有管理员能删")
     @DeleteMapping("/{id}")
     public Result<Boolean> deleteById(@PathVariable int id){
         Map<String,Object> map = ThreadLocalUtil.get();
